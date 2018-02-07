@@ -4,28 +4,46 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import tech.holm.red01_wordCounter.fileanalyzer.FileAnalyzer;
+import tech.holm.red01_wordCounter.fileanalyzer.Analyzer;
+import tech.holm.red01_wordCounter.networkHelpMe.NanoTCPClient;
+import tech.holm.red01_wordCounter.networkHelpMe.NanoTCPServer;
 
 import java.io.IOException;
 
 @Controller
-public class GeometricObjectController {
+public class NetworkHelpMeController {
 
-    private FileAnalyzer analyzer = new FileAnalyzer();
+    private Analyzer analyzer = new Analyzer();
+    private NanoTCPServer server;
+    private NanoTCPClient client;
 
-    @GetMapping(value = {"/geometric"})
+    @GetMapping(value = {"/network"})
     public String showGeometricPage(Model model){
-            return "opgave001";
+            return "networkhelp";
     }
 
-    @PostMapping("/submit/geometric")
-    public String analyze(Model model) {
+    @PostMapping("/submit/startserver")
+    public String startServer(Model model) {
+        server = new NanoTCPServer();
+        System.out.println("server started;");
+        try {
+            model.addAttribute("message", server.searchForClient());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        return "opgave001";
+        return "networkhelp";
     }
 
-
+    @PostMapping("/submit/startclient")
+    public String startClient(Model model) {
+        System.out.println("Creating client:");
+        client = new NanoTCPClient();
+        System.out.println("out of client");
+        model.addAttribute("ip", client.getIp());
+        model.addAttribute("message", client.getMessage());
+        System.out.println("client started with ip: " + client.getIp() + "and message: " + client.getMessage());
+        return "networkhelp";
+    }
 
 }

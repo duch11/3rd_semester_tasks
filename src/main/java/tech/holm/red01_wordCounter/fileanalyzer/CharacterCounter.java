@@ -1,4 +1,4 @@
-package tech.holm.red01_wordCounter;
+package tech.holm.red01_wordCounter.fileanalyzer;
 
 public class CharacterCounter {
     private char character;

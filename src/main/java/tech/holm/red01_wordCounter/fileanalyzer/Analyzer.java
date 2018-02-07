@@ -3,13 +3,14 @@ package tech.holm.red01_wordCounter.fileanalyzer;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import org.springframework.web.multipart.MultipartFile;
-import tech.holm.red01_wordCounter.fileanalyzer.AnalyticsResult;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class FileAnalyzer {
+public class Analyzer {
 
     public ArrayList<AnalyticsResult> analyzeFileForLetters(MultipartFile file) throws IOException {
         System.out.println("Analyzing: " + file.getOriginalFilename());
@@ -20,12 +21,22 @@ public class FileAnalyzer {
 
             Multiset tokenCounter = HashMultiset.create();
 
-            addLetterToMultiset(file, tokenCounter);
+            addLetterToMultisetFromFile(file, tokenCounter);
 
             return sortEntries(tokenCounter);
 
         }
         return new ArrayList<>();
+    }
+
+    public ArrayList<AnalyticsResult> analyzeUrlForLetters(String url) throws IOException {
+        System.out.println("Analyzing: " + url);
+
+        Multiset tokenCounter = HashMultiset.create();
+
+        addLetterToMultisetFromUrl(url, tokenCounter);
+
+        return sortEntries(tokenCounter);
     }
 
     public ArrayList analyzeFileForWords(MultipartFile file) throws IOException {
@@ -99,8 +110,14 @@ public class FileAnalyzer {
         addToMultiset(scanner, tokenCounter);
     }
 
-    private void addLetterToMultiset(MultipartFile file, Multiset tokenCounter) throws IOException {
-        Scanner scanner = getLetterScanner(file);
+    private void addLetterToMultisetFromFile(MultipartFile file, Multiset tokenCounter) throws IOException {
+        Scanner scanner = getLetterScanner(file.getInputStream());
+        addToMultiset(scanner, tokenCounter);
+    }
+
+    private void addLetterToMultisetFromUrl(String urlString, Multiset tokenCounter) throws IOException {
+        URL url = new URL(urlString);
+        Scanner scanner = getLetterScanner(url.openStream());
         addToMultiset(scanner, tokenCounter);
     }
 
@@ -121,8 +138,8 @@ public class FileAnalyzer {
         System.out.println(tokenCounter.elementSet());
     }
 
-    private Scanner getLetterScanner(MultipartFile file) throws IOException {
-        Scanner scanner = new Scanner(file.getInputStream());
+    private Scanner getLetterScanner(InputStream inputStream) throws IOException {
+        Scanner scanner = new Scanner(inputStream);
         scanner.useDelimiter("");
         return scanner;
     }

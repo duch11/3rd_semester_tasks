@@ -2,31 +2,24 @@ package tech.holm.red01_wordCounter.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import tech.holm.red01_wordCounter.fileanalyzer.FileAnalyzer;
-
-import java.io.IOException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import tech.holm.red01_wordCounter.fileanalyzer.Analyzer;
 
 @Controller
-public class AnalyzerController {
+public class GeometricObjectController {
 
-    private FileAnalyzer analyzer = new FileAnalyzer();
+    private Analyzer analyzer = new Analyzer();
 
-    @GetMapping(value = {"", ""})
-    public String showMainPage(Model model){
-            return "Frontpage";
+    @GetMapping(value = {"/geometric"})
+    public String showGeometricPage(Model model){
+            return "opgave001";
     }
 
-    @PostMapping("/submit")
-    public String analyze(Model model, @RequestParam("file") MultipartFile file) throws IOException {
-        if(!file.isEmpty()){
-            model.addAttribute("sortedLetterList", analyzer.analyzeFileForLetters(file));
-            model.addAttribute("sortedWordList", analyzer.analyzeFileForWords(file));
-            model.addAttribute("fileAnalyzed", true);
-        }
-        model.addAttribute("fileRecieved", true);
-        return "Frontpage";
+    @PostMapping("/submit/geometric")
+    public String analyze(Model model) {
+
+        return "opgave001";
     }
 
 
