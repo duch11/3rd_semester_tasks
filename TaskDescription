@@ -1,0 +1,33 @@
+Part 1:
+
+Make a java program that reads a file, aliceinwonderland.txt, and counts how many characters of each type there is.
+I.e. how many ‘a’, how many ‘b’, how many ‘c’, and so on. Disregarding upper or lower case.
+
+When you have a count of number of characters for each character in the alphabet,
+then you should calculate the percentage of each character,
+i.e. how many percent of all characters is the ‘a’, the ‘b’, and so on.
+
+Only alphabet characters, no special characters like ‘,’ or ‘.’ or ‘?
+
+
+
+Part 2: Now count the words instead of characters.
+Sort the output descending, so the word with highest occurrance comes first.
+
+
+
+Part 3:
+Make the program ask for an URL, such as the link to "Alice in Wonderland"
+online https://www.gutenberg.org/files/11/11-h/11-h.htm and then counts characters and displays percentages.
+
+
+
+Part 4:
+
+Add a JavaFX GUI or Web-GUI, which:
+
+- can receive an URL for a text document
+
+-  has an "Analyze" button
+
+- displays a sorted list of words and count for each word in the file.
