@@ -29,4 +29,13 @@ public class AnalyticsResult {
         DecimalFormat df = new DecimalFormat("####0.00");
         return df.format(tokenPercentage);
     }
+
+    @Override
+    public String toString() {
+        return "AnalyticsResult{" +
+                "tokenValue='" + tokenValue + '\'' +
+                ", tokenAmount=" + tokenAmount +
+                ", tokenPercentage=" + tokenPercentage +
+                '}';
+    }
 }

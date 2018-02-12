@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>WordCounter</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<body>
+
+<div th:fragment="chat">
+
+    <form th:if="!${isclient}" action="/startchatserver" method="post">
+        <button class="btn btn-success" type="submit">Start Server</button>
+    </form>
+
+    <form th:if="${isclient}" action="/startchatclient" method="post">
+        <button class="btn btn-success" type="submit">Start Client</button>
+    </form>
+
+    <p th:utext="${message}">message</p>
+
+    <form class="" action="/submit/sendmessage" th:method="post">
+        <div class="form-group">
+            <input th:attrappend="value=${isclient}" type="hidden" name="isclient" value=""/>
+            <input type="text" name="message"/>
+            <button class="btn btn-success" type="submit">Send</button>
+        </div>
+    </form>
+</div>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

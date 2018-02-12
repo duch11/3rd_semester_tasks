@@ -18,8 +18,8 @@ public class AnalyzerController {
     private ArrayList<AnalyticsResult> fileCharResult;
     private ArrayList<AnalyticsResult> fileWordResult;
 
-    @GetMapping(value = {"", ""})
-    public String showMainPage(Model model){
+    @GetMapping(value = {"/analyzer"})
+    public String showAnalyzer(Model model){
             return "Frontpage";
     }
 
