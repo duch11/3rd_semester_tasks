@@ -48,7 +48,7 @@ public class Analyzer {
 
             Multiset tokenCounter = HashMultiset.create();
 
-            addWordToMultiset(file, tokenCounter);
+            addWordToMultisetFromFile(file, tokenCounter);
 
             return sortEntries(tokenCounter);
         }
@@ -63,52 +63,71 @@ public class Analyzer {
             unSortedEntries.add((Multiset.Entry) entry);
         }
 
-        ArrayList<AnalyticsResult> sortedEntries = sortEntryArraylist(unSortedEntries);
+        //notice the method!
+        ArrayList<AnalyticsResult> sortedEntries = sortUnsortedEntries(unSortedEntries);
         System.out.println(sortedEntries);
 
         return sortedEntries;
     }
 
-    private ArrayList<AnalyticsResult> sortEntryArraylist(ArrayList<Multiset.Entry> unSortedEntries) {
+    private ArrayList<AnalyticsResult> sortUnsortedEntries(ArrayList<Multiset.Entry> unSortedEntries) {
+        //getting ready to sort entries
         ArrayList<Multiset.Entry> sortedEntries = new ArrayList<>();
-        while(!unSortedEntries.isEmpty()){
-            Multiset.Entry finalEntry = null;
 
+        //sort all the unsorted entries
+        while(!unSortedEntries.isEmpty()){
+
+            Multiset.Entry finalEntry = null;
             for (Multiset.Entry entry : unSortedEntries){
+                //first entry
                 if(finalEntry == null){
                     finalEntry = entry;
+                    //the rest
                 } else {
+                    //is this entry the biggest?
                     if(finalEntry.getCount() < entry.getCount() ){
                         finalEntry = entry;
                     }
                 }
             }
-
+            //when done transfer the final and biggest entry to sorted
             sortedEntries.add(finalEntry);
-
             unSortedEntries.remove(finalEntry);
-
         }
 
+        //when done sorting, convert the results to our custom datatype for easier data retrieval
         ArrayList<AnalyticsResult> analyticsResults = new ArrayList<AnalyticsResult>();
 
         Double total = new Double(0);
+        //create Analytics results, and count the total amount of tokens for percentage calculation
         for(Multiset.Entry e : sortedEntries){
             analyticsResults.add(new AnalyticsResult((String) e.getElement(), e.getCount()));
             total = total.doubleValue() + e.getCount();
         }
 
+        //percentage calculation based on the total amount of tokens
         for(AnalyticsResult result : analyticsResults){
             result.calculateTokenPercentage(total);
         }
 
+        //done
         return analyticsResults;
     }
 
-    private void addWordToMultiset(MultipartFile file, Multiset tokenCounter) throws IOException {
+
+
+    private void addWordToMultisetFromFile(MultipartFile file, Multiset tokenCounter) throws IOException {
+        //make the scanner
         Scanner scanner = getWordScanner(file);
         addToMultiset(scanner, tokenCounter);
     }
+
+    private Scanner getWordScanner(MultipartFile file) throws IOException {
+        Scanner scanner = new Scanner(file.getInputStream());
+        return scanner;
+    }
+
+
 
     private void addLetterToMultisetFromFile(MultipartFile file, Multiset tokenCounter) throws IOException {
         Scanner scanner = getLetterScanner(file.getInputStream());
@@ -121,31 +140,30 @@ public class Analyzer {
         addToMultiset(scanner, tokenCounter);
     }
 
-    private void addToMultiset(Scanner scanner, Multiset tokenCounter) {
-        while (scanner.hasNext()){
-            String token = scanner.next();
-
-            token = token.toUpperCase();
-            token = token.replaceAll("[^A-Z]","");
-            if(!token.isEmpty()){
-                tokenCounter.add(token);
-            }
-
-
-        }
-
-        //prints final set
-        System.out.println(tokenCounter.elementSet());
-    }
-
     private Scanner getLetterScanner(InputStream inputStream) throws IOException {
         Scanner scanner = new Scanner(inputStream);
         scanner.useDelimiter("");
         return scanner;
     }
 
-    private Scanner getWordScanner(MultipartFile file) throws IOException {
-        Scanner scanner = new Scanner(file.getInputStream());
-        return scanner;
+
+    private void addToMultiset(Scanner scanner, Multiset tokenCounter) {
+        while (scanner.hasNext()){
+            //get token
+            String token = scanner.next();
+
+            //scrape off all unnecessary
+            token = token.toUpperCase();
+            token = token.replaceAll("[^A-Z]","");
+
+            //if theres still something left add it to the multiset
+            if(!token.isEmpty()){
+                tokenCounter.add(token);
+            }
+        }
     }
+
+
+
+
 }
