@@ -18,63 +18,63 @@
 </nav>
 
 <div class="container">
-       <div class="col-md-4">
-           <div class="row">
-               <form class="" action="/submit" th:method="post" enctype="multipart/form-data">
-                   <div class="form-group">
-                       <label class="btn btn-default" for="fileBrowser">
-                           <input id="fileBrowser" type="file" style="display:none;" th:name="file"/>
-                           Browse
-                       </label>
-                       <button class="btn btn-success" type="submit">Analyze File!</button>
-                   </div>
-               </form>
-           </div>
-           <div class="row">
-               <form class="form-inline" action="/submit" th:method="post" >
-                   <p>Tip! Use this URL: http://www.gutenberg.org/files/11/11-h/11-h.htm</p>
-                   <div class="form-group">
-                       <input class="form-control" type="text" th:name="url" placeholder="URL"/>
-                   </div>
-                   <button class="btn btn-success" type="submit">Analyze URL!</button>
-               </form>
-           </div>
-           <div class="row">
-               <div class="starter-template">
-
-                   <h2 th:text="${urlAnalyzed} ? 'URL Recieved and analyzed!'">
-                   </h2>
-
-                   <h2 th:text="${fileAnalyzed} ? 'File has been analyzed!'">
-                   </h2>
-
+   <div class="col-md-4">
+       <div class="row">
+           <form class="" action="/submit" th:method="post" enctype="multipart/form-data">
+               <div class="form-group">
+                   <label class="btn btn-default" for="fileBrowser">
+                       <input id="fileBrowser" type="file" style="display:none;" th:name="file"/>
+                       Browse
+                   </label>
+                   <button class="btn btn-success" type="submit">Analyze File!</button>
                </div>
-           </div>
-           <div class="row">
-               <h2>File Word Results:</h2>
-               <ul class="list-group">
-                   <li class="list-group-item" th:each="result : ${sortedWordList}">
-                       <h4 th:text="${result.getTokenAmount()} + ' ' + ${result.getTokenValue()}">Hej</h4>
-                   </li>
-               </ul>
+           </form>
+       </div>
+       <div class="row">
+           <form class="form-inline" action="/submit" th:method="post" >
+               <p>Tip! Use this URL: http://www.gutenberg.org/files/11/11-h/11-h.htm</p>
+               <div class="form-group">
+                   <input class="form-control" type="text" th:name="url" placeholder="URL"/>
+               </div>
+               <button class="btn btn-success" type="submit">Analyze URL!</button>
+           </form>
+       </div>
+       <div class="row">
+           <div class="starter-template">
+
+               <h2 th:text="${urlAnalyzed} ? 'URL Recieved and analyzed!'">
+               </h2>
+
+               <h2 th:text="${fileAnalyzed} ? 'File has been analyzed!'">
+               </h2>
+
            </div>
        </div>
-       <div class="col-md-4">
-           <h2>File Character Results:</h2>
+       <div class="row">
+           <h2>File Word Results:</h2>
            <ul class="list-group">
-               <li class="list-group-item" th:each="result : ${sortedLetterList}">
-                   <h4 th:text="${result.getTokenAmount()} + ' ' + ${result.getTokenValue()} + ' ' + ${result.printTokenPercentageFormatted()} + '%'">Hej</h4>
+               <li class="list-group-item" th:each="result : ${sortedWordList}">
+                   <h4 th:text="${result.getTokenAmount()} + ' ' + ${result.getTokenValue()}">Hej</h4>
                </li>
            </ul>
        </div>
-        <div class="col-md-4">
-            <h2>URL Character Results:</h2>
-            <ul class="list-group">
-                <li class="list-group-item" th:each="result : ${sortedLetterListURL}">
-                    <h4 th:text="${result.getTokenAmount()} + ' ' + ${result.getTokenValue()} + ' ' + ${result.printTokenPercentageFormatted()} + '%'">Hej</h4>
-                </li>
-            </ul>
-        </div>
+   </div>
+   <div class="col-md-4">
+       <h2>File Character Results:</h2>
+       <ul class="list-group">
+           <li class="list-group-item" th:each="result : ${sortedLetterList}">
+               <h4 th:text="${result.getTokenAmount()} + ' ' + ${result.getTokenValue()} + ' ' + ${result.printTokenPercentageFormatted()} + '%'">Hej</h4>
+           </li>
+       </ul>
+   </div>
+    <div class="col-md-4">
+        <h2>URL Character Results:</h2>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="result : ${sortedLetterListURL}">
+                <h4 th:text="${result.getTokenAmount()} + ' ' + ${result.getTokenValue()} + ' ' + ${result.printTokenPercentageFormatted()} + '%'">Hej</h4>
+            </li>
+        </ul>
+    </div>
 </div>
 <!-- /.container -->
 
