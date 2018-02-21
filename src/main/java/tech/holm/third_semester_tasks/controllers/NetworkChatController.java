@@ -1,12 +1,12 @@
-package tech.holm.red01_wordCounter.controllers;
+package tech.holm.third_semester_tasks.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import tech.holm.red01_wordCounter.networkChat.NanoChatTCPClient;
-import tech.holm.red01_wordCounter.networkChat.NanoChatTCPServer;
+import tech.holm.third_semester_tasks.networkChat.NanoChatTCPClient;
+import tech.holm.third_semester_tasks.networkChat.NanoChatTCPServer;
 
 @Controller
 public class NetworkChatController {

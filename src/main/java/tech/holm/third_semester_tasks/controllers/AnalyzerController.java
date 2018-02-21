@@ -1,11 +1,11 @@
-package tech.holm.red01_wordCounter.controllers;
+package tech.holm.third_semester_tasks.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tech.holm.red01_wordCounter.fileanalyzer.AnalyticsResult;
-import tech.holm.red01_wordCounter.fileanalyzer.Analyzer;
+import tech.holm.third_semester_tasks.fileanalyzer.AnalyticsResult;
+import tech.holm.third_semester_tasks.fileanalyzer.Analyzer;
 
 import java.io.IOException;
 import java.util.ArrayList;

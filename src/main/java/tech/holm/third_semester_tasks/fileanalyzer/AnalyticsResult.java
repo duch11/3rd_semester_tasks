@@ -1,4 +1,4 @@
-package tech.holm.red01_wordCounter.fileanalyzer;
+package tech.holm.third_semester_tasks.fileanalyzer;
 
 import java.text.DecimalFormat;
 

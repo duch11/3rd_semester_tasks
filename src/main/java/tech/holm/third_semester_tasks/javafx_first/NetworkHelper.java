@@ -1,4 +1,4 @@
-package tech.holm.red01_wordCounter.javafx_first;
+package tech.holm.third_semester_tasks.javafx_first;
 
 import java.io.InputStream;
 import java.io.OutputStream;

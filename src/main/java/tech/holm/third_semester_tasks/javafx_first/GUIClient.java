@@ -1,4 +1,4 @@
-package tech.holm.red01_wordCounter.javafx_first;
+package tech.holm.third_semester_tasks.javafx_first;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -7,9 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import sun.nio.ch.Net;
-
-import java.awt.event.KeyEvent;
 
 public class GUIClient extends Application {
     public NetworkHelper networkHelper;

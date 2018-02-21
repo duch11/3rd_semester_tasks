@@ -1,4 +1,4 @@
-package tech.holm.red01_wordCounter.geometricObject;
+package tech.holm.third_semester_tasks.geometricObject;
 
 public class Triangle extends GeometricObject {
 

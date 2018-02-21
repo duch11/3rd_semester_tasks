@@ -1,6 +1,5 @@
-package tech.holm.red01_wordCounter.networkHelpMe;
+package tech.holm.third_semester_tasks.networkHelpMe;
 
-import java.io.CharArrayWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;

@@ -1,4 +1,4 @@
-package tech.holm.red01_wordCounter.networkHelpMe;
+package tech.holm.third_semester_tasks.networkHelpMe;
 
 import java.io.*;
 import java.net.ServerSocket;

@@ -1,9 +1,8 @@
-package tech.holm.red01_wordCounter.networkChat;
+package tech.holm.third_semester_tasks.networkChat;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class NanoChatTCPServer implements Runnable{
     private ServerSocket serverSocket;
