@@ -1,4 +1,4 @@
-package tech.holm.red01_wordCounter;
+package tech.holm.third_semester_tasks;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
