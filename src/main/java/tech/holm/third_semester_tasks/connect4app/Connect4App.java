@@ -19,6 +19,13 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,6 +60,10 @@ public class Connect4App extends Application {
     private boolean gameOver = false;
     private Pane root;
 
+    Socket socket;
+    OutputStream outputStream;
+    InputStream inputStream;
+
     @Override
     public void stop(){
         System.out.println("app was closed...");
@@ -61,18 +72,41 @@ public class Connect4App extends Application {
 
     private void clientConnectToServer(){
         System.out.println("connecting to server...");
-        // fill
+        try {
+
+            /*ip = "192.168.0.16";*/
+            String port = portEntry.getText();
+
+            socket = new Socket(ipEntry.getText(), Integer.valueOf(portEntry.getText()));
+            System.out.println("Client Started with server socket: " + socket.getPort());
+            outputStream = socket.getOutputStream();
+            inputStream = socket.getInputStream();
+            PrintWriter printWriter = new PrintWriter(outputStream);
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void startServer(){
         System.out.println("starting server...");
-        // fill
+        ServerSocket serverSocket;
+        try {
+            serverSocket = new ServerSocket(serverPortNumber);
+            System.out.println("Server Started on port: " + serverSocket.getLocalPort());
+
+        } catch (IOException e) {
+            System.out.println("Server Constructor error: " + e.getMessage());
+        }
     }
 
 
     public void receiveNetworkMove(int column){
         Platform.runLater(() -> placeDisc(new Disc(redMove), column));
         // possibly add further code
+
     }
 
     public void sendNetworkMove(int column){
