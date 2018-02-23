@@ -8,19 +8,16 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import javax.xml.crypto.Data;
-
 
 public class GUIClient extends Application {
     public NetworkHelper networkHelper;
-    private double width = 500;
-    private double height = 500;
+    private double width = 1000;
+    private double height = 1000;
     private GraphicsContext graphicsContext;
 
     public static void main(String[] args) {
@@ -31,12 +28,12 @@ public class GUIClient extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         //netværk code
-        //networkHelper = new NetworkHelper();
+        networkHelper = new NetworkHelper();
         VBox vbox = new VBox();
 
         makeGUI(vbox);
 
-        Scene scene = new Scene(vbox, 500,height+200);
+        Scene scene = new Scene(vbox, 1000,height+200);
         scene.getStylesheets().add("static/javafx.css");
 
         primaryStage.setScene(scene);
@@ -60,52 +57,6 @@ public class GUIClient extends Application {
         Label label = new Label("Gør brug af dette program tak");
         Button startBtn = new Button("Forbindelse");
 
-        configureButton(namePrompt, redPrompt, bluePrompt, greenPrompt, startBtn);
-
-
-        vbox.setSpacing(10);
-        vbox.getChildren().addAll(label, namePrompt, redPrompt,bluePrompt,greenPrompt, startBtn);
-
-        //make canvas
-        Canvas canvas = new Canvas(width, height);
-
-        //vi laver et anonymt objekt af et interface.
-        EventHandler<MouseEvent> mouseClickedHandler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("X: " + event.getX());
-                System.out.println("Y: " + event.getY());
-                graphicsContext.beginPath();
-                graphicsContext.moveTo(event.getX(), event.getY());
-            }
-        };
-
-
-
-        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseClickedHandler);
-
-        EventHandler<MouseEvent> mouseDraggedHandler = new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                System.out.println("X: " + event.getX());
-                System.out.println("Y: " + event.getY());
-                graphicsContext.lineTo(event.getX(),event.getY());
-                graphicsContext.stroke();
-            }
-        };
-
-        canvas.addEventHandler(MouseEvent.MOUSE_MOVED, mouseDraggedHandler);
-
-        graphicsContext = canvas.getGraphicsContext2D();
-        graphicsContext.setStroke(Color.rgb(255,244,1));
-        graphicsContext.setLineWidth(20);
-
-        vbox.getChildren().add(canvas);
-
-
-    }
-
-    private void configureButton(TextField namePrompt, TextField redPrompt, TextField bluePrompt, TextField greenPrompt, Button startBtn) {
         startBtn.setOnAction(
                 event -> {
                     networkHelper.sendMessage(namePrompt.getText(), redPrompt.getText(), greenPrompt.getText(), bluePrompt.getText());
@@ -132,5 +83,54 @@ public class GUIClient extends Application {
                     networkHelper.sendArrow("DOWN");
             }
         });
+
+        vbox.setSpacing(10);
+        vbox.getChildren().addAll(label, namePrompt, redPrompt,bluePrompt,greenPrompt, startBtn);
+
+        //make canvas
+        Canvas canvas = new Canvas(width, height);
+
+        //vi laver et anonymt objekt af et interface.
+        EventHandler<MouseEvent> mouseClickedHandler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+//                networkHelper.sendPressEvent(event.getX(), event.getY());
+                graphicsContext.beginPath();
+                graphicsContext.moveTo(event.getX(), event.getY());
+            }
+        };
+
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, mouseClickedHandler);
+
+        EventHandler<MouseEvent> mouseDraggedHandler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+//                networkHelper.sendDraggedEvent(event.getX(), event.getY());
+                graphicsContext.lineTo(event.getX(),event.getY());
+                graphicsContext.stroke();
+            }
+        };
+
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouseDraggedHandler);
+
+        EventHandler<MouseEvent> mouseReleaseHandler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+//                networkHelper.sendReleaseEvent(event.getX(), event.getY());
+                graphicsContext.lineTo(event.getX(),event.getY());
+                graphicsContext.closePath();
+            }
+        };
+
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, mouseReleaseHandler);
+
+        graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.setStroke(Color.rgb(255,244,1));
+        graphicsContext.setLineWidth(2);
+
+        vbox.getChildren().add(canvas);
+
+
     }
+
 }

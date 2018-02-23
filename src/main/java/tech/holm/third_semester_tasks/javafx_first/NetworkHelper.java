@@ -12,6 +12,7 @@ public class NetworkHelper {
     private Socket socket;
     private OutputStream outputStream;
     private InputStream inputStream;
+    private PrintWriter printWriter;
 
     public NetworkHelper() {
         try {
@@ -21,6 +22,8 @@ public class NetworkHelper {
 
             outputStream = socket.getOutputStream();
             inputStream = socket.getInputStream();
+            printWriter = new PrintWriter(outputStream);
+            System.out.println("Connection: " + outputStream.toString());
 
         } catch (Exception e) {
             System.out.println("No connection");
@@ -28,15 +31,30 @@ public class NetworkHelper {
     }
 
     public void sendMessage(String name, String red, String green, String blue){
-        PrintWriter output = new PrintWriter(outputStream, true);
         System.out.println("C: Sending message: " + name + " " + red  + " " + green  + " " + blue);
-        output.println(name);
-        output.println(red+","+green+","+blue);
+        printWriter.println(name);
+        printWriter.println(red+","+green+","+blue);
         System.out.println("C: Message sent.");
     }
 
     public void sendArrow(String direction){
-        PrintWriter output = new PrintWriter(outputStream, true);
-        output.println(direction);
+        PrintWriter printWriter1 = new PrintWriter(outputStream);
+        printWriter1.println(direction);
+        System.out.println(direction);
     }
+
+    /*public void sendReleaseEvent(Double x, Double y){
+        printWriter.println("R,"+x.intValue()+","+y.intValue());
+        System.out.println("R,"+x.intValue()+","+y.intValue());
+    }
+
+    public void sendDraggedEvent(Double x, Double y){
+        printWriter.println("D,"+x.intValue()+","+y.intValue());
+        System.out.println("D,"+x.intValue()+","+y.intValue());
+    }
+
+    public void sendPressEvent(Double x, Double y){
+        printWriter.println("P,"+x.intValue()+","+y.intValue());
+        System.out.println(("P," + x.intValue() + "," + y.intValue()));
+    }*/
 }
