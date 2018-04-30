@@ -19,10 +19,7 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -54,7 +51,7 @@ public class Connect4App extends Application {
     private TextField gameOverLabel = new TextField();
     private String messageStyle =  "; -fx-text-fill: white";
     public final int serverPortNumber = 1337;
-    private TextField ipEntry = new TextField("192.168.1.168");
+    private TextField ipEntry = new TextField("localhost");
     private TextField portEntry = new TextField(serverPortNumber+"");
     private Label ipLabel = new Label("IP");
     private boolean gameOver = false;
@@ -63,6 +60,8 @@ public class Connect4App extends Application {
     Socket socket;
     OutputStream outputStream;
     InputStream inputStream;
+    Thread thread;
+    String name;
 
     @Override
     public void stop(){
@@ -72,19 +71,12 @@ public class Connect4App extends Application {
 
     private void clientConnectToServer(){
         System.out.println("connecting to server...");
+        name = "Client: ";
         try {
-
-            /*ip = "192.168.0.16";*/
-            String port = portEntry.getText();
-
             socket = new Socket(ipEntry.getText(), Integer.valueOf(portEntry.getText()));
+            setPorts();
+            startThread();
             System.out.println("Client Started with server socket: " + socket.getPort());
-            outputStream = socket.getOutputStream();
-            inputStream = socket.getInputStream();
-            PrintWriter printWriter = new PrintWriter(outputStream);
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,25 +85,75 @@ public class Connect4App extends Application {
     private void startServer(){
         System.out.println("starting server...");
         ServerSocket serverSocket;
+        name = "Server: ";
         try {
             serverSocket = new ServerSocket(serverPortNumber);
             System.out.println("Server Started on port: " + serverSocket.getLocalPort());
+            socket = serverSocket.accept();
+            setPorts();
+            startThread();
+            System.out.println("Server recieved client on port: " + socket.getRemoteSocketAddress());
 
         } catch (IOException e) {
             System.out.println("Server Constructor error: " + e.getMessage());
         }
     }
 
+    private void setPorts() throws IOException {
+        outputStream = socket.getOutputStream();
+        inputStream = socket.getInputStream();
+    }
+
+    private void startThread() {
+        LookForMessageTask lookForMessageTask = new LookForMessageTask(socket);
+        thread = new Thread(lookForMessageTask);
+        thread.start();
+    }
+
+    class LookForMessageTask implements Runnable{
+
+        private BufferedReader bufferedReader;
+
+        public LookForMessageTask(Socket socket){
+            try {
+                bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try{
+                    if (bufferedReader.ready()){
+                        String message = bufferedReader.readLine();
+                        //System.out.println(name +"Message received: " + message);
+
+                        //KAN JEG DET HER??
+                        Platform.runLater(() -> placeDisc(new Disc(redMove), Integer.valueOf(message)));
+
+                    } else {
+
+                        //System.out.println(name+"No Message");
+                    }
+                } catch (Exception e){
+
+                }
+            }
+        }
+    }
 
     public void receiveNetworkMove(int column){
         Platform.runLater(() -> placeDisc(new Disc(redMove), column));
         // possibly add further code
-
     }
 
     public void sendNetworkMove(int column){
         System.out.println("Sending move to network:  " + column);
-        // fill
+        PrintWriter printWriter = new PrintWriter(outputStream, true);
+        printWriter.println(column);
+        System.out.println("printed move");
     }
 
     // Exercise: Call this method to display server status
